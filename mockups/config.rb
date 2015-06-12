@@ -2,10 +2,11 @@ require 'compass/import-once/activate'
 # Require any additional compass plugins here.
 
 # Set this to the root of your project when deployed:
-http_path = "/"
+http_path = "/home/jim/Code/Python/learning-journal/mockups/"
+project_path = "/home/jim/Code/Python/learning-journal/mockups/"
 css_dir = "stylesheets"
 sass_dir = "sass"
-images_dir = "images"
+images_dir = "img"
 javascripts_dir = "javascripts"
 
 # You can select your preferred output style here (can be overridden via the command line):

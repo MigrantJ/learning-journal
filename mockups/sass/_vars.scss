@@ -1,1 +1,17 @@
-$test: 36px;
+$color-primary: #3776aa;
+$color-secondary: #ffd343;
+
+$bg-gradient-topleft: tint($color-primary, 50%);
+$bg-gradient-botright: tint($color-secondary, 50%);
+
+$link-color: $color-secondary;
+$link-hover-color: tint($link-color, 50%);
+
+/*Journal List*/
+$list-width: 480px;
+$list-offset: $list-width / 2 * -1;
+$list-bgcolor: rgba($color-primary, 0.1);
+
+/*List Items*/
+$list-item-bgcolor: rgba(darken($color-primary, 10%), 0.3);
+$list-item-bgcolor-alt: rgba(darken($color-primary, 30%), 0.3);

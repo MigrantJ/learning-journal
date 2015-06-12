@@ -3,9 +3,71 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
+/* Compass Imports */
 @import "compass/reset";
+@import "compass/layout";
+@import "compass/css3";
+@import "compass/utilities/general/clearfix";
+
+/* Sass imports */
 @import "vars";
 
-h1 {
-  font-size: $test;
+@include sticky-footer(54px);
+
+body {
+  @include background(linear-gradient(to bottom right, $bg-gradient-topleft, $bg-gradient-botright));
+}
+
+a {
+  color: $link-color;
+
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: underline;
+  }
+}
+
+#header {
+  //@include background-image(image_url("Python-logo-notext.svg"));
+  height: 72px;
+
+  h1 {
+    font-size: 36px;
+  }
+}
+
+#root {
+
+}
+
+#journal-list {
+  width: $list-width;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  margin-left: $list-offset;
+  background-color: $list-bgcolor;
+}
+
+.journal-list-item {
+  @include clearfix();
+  background-color: $list-item-bgcolor;
+  height: 20px;
+  padding: 10px;
+
+  &:nth-child(2) {
+    background-color: $list-item-bgcolor-alt;
+  }
+
+  .title {
+    float: left;
+  }
+
+  .date {
+    float: right;
+  }
+}
+
+button {
+
 }
