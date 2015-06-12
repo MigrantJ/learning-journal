@@ -7,6 +7,10 @@ $bg-gradient-botright: tint($color-secondary, 50%);
 $link-color: $color-secondary;
 $link-hover-color: tint($link-color, 50%);
 
+$button-text-color: $color-secondary;
+$button-gradient-top: $color-primary;
+$button-gradient-bottom: darken($color-primary, 20%);
+
 /*Journal List*/
 $list-width: 480px;
 $list-offset: $list-width / 2 * -1;

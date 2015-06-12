@@ -1,21 +1,22 @@
-/* Welcome to Compass.
- * In this file you should write your main styles. (or centralize your imports)
- * Import this file using the following HTML or equivalent:
- * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-
-/* Compass Imports */
+//Compass imports
 @import "compass/reset";
 @import "compass/layout";
 @import "compass/css3";
 @import "compass/utilities/general/clearfix";
+@import "compass/typography/text/ellipsis";
 
-/* Sass imports */
+//Local imports
 @import "vars";
 
-@include sticky-footer(54px);
+//External imports
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+@include sticky-footer(0px);
+@include font-face("Open Sans", null);
 
 body {
   @include background(linear-gradient(to bottom right, $bg-gradient-topleft, $bg-gradient-botright));
+  font-family: "Open Sans", sans-serif;
 }
 
 a {
@@ -27,8 +28,21 @@ a {
   }
 }
 
+#container {
+  @include background-image(image_url("Python-logo-notext.svg"));
+  background-repeat: repeat-x;
+  background-size: cover;
+  background-position: 50%;
+
+  width: $list-width;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  margin-left: $list-offset;
+  background-color: $list-bgcolor;
+}
+
 #header {
-  //@include background-image(image_url("Python-logo-notext.svg"));
   height: 72px;
 
   h1 {
@@ -36,17 +50,25 @@ a {
   }
 }
 
-#root {
+.create-new {
+  button {
+    @include background(linear-gradient(to bottom, $button-gradient-top, $button-gradient-bottom));
+    color: $button-text-color;
+    width: 100%;
 
+    &:hover {
+      @include background(linear-gradient(to bottom, $button-gradient-top, $button-gradient-bottom));
+    }
+  }
 }
 
 #journal-list {
-  width: $list-width;
-  height: 100%;
-  position: absolute;
-  left: 50%;
-  margin-left: $list-offset;
-  background-color: $list-bgcolor;
+  //width: $list-width;
+  //height: 100%;
+  //position: absolute;
+  //left: 50%;
+  //margin-left: $list-offset;
+  //background-color: $list-bgcolor;
 }
 
 .journal-list-item {
@@ -66,8 +88,4 @@ a {
   .date {
     float: right;
   }
-}
-
-button {
-
 }
