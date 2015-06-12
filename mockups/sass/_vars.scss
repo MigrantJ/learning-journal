@@ -11,11 +11,14 @@ $button-text-color: $color-secondary;
 $button-gradient-top: $color-primary;
 $button-gradient-bottom: darken($color-primary, 20%);
 
+$header-color: $color-primary;
+
 /*Journal List*/
 $list-width: 480px;
 $list-offset: $list-width / 2 * -1;
-$list-bgcolor: rgba($color-primary, 0.1);
+$list-bgcolor: rgba($color-primary, 0.3);
+$list-border-color: darken($color-primary, 10%);
 
 /*List Items*/
-$list-item-bgcolor: rgba(darken($color-primary, 10%), 0.3);
-$list-item-bgcolor-alt: rgba(darken($color-primary, 30%), 0.3);
+$list-item-bgcolor: rgba(darken($color-primary, 10%), 0.2);
+$list-item-bgcolor-alt: rgba(darken($color-primary, 30%), 0.2);

@@ -17,6 +17,7 @@
 body {
   @include background(linear-gradient(to bottom right, $bg-gradient-topleft, $bg-gradient-botright));
   font-family: "Open Sans", sans-serif;
+  overflow: hidden;
 }
 
 a {
@@ -28,24 +29,30 @@ a {
   }
 }
 
-#container {
-  @include background-image(image_url("Python-logo-notext.svg"));
-  background-repeat: repeat-x;
-  background-size: cover;
-  background-position: 50%;
+#bg {
+  width: 100%;
+  position: absolute;
+  margin-left: 30%;
+  bottom: -20%;
+  opacity: 0.2;
+}
 
+#container {
   width: $list-width;
   height: 100%;
   position: absolute;
   left: 50%;
   margin-left: $list-offset;
   background-color: $list-bgcolor;
+  box-shadow: 0px 0px 20px black;
 }
 
 #header {
-  height: 72px;
+  padding: 10px;
 
   h1 {
+    color: white;
+    text-align: center;
     font-size: 36px;
   }
 }
@@ -55,6 +62,7 @@ a {
     @include background(linear-gradient(to bottom, $button-gradient-top, $button-gradient-bottom));
     color: $button-text-color;
     width: 100%;
+    font-size: 24px;
 
     &:hover {
       @include background(linear-gradient(to bottom, $button-gradient-top, $button-gradient-bottom));
@@ -63,12 +71,7 @@ a {
 }
 
 #journal-list {
-  //width: $list-width;
-  //height: 100%;
-  //position: absolute;
-  //left: 50%;
-  //margin-left: $list-offset;
-  //background-color: $list-bgcolor;
+
 }
 
 .journal-list-item {
@@ -76,6 +79,7 @@ a {
   background-color: $list-item-bgcolor;
   height: 20px;
   padding: 10px;
+  border-bottom: 1px solid $button-gradient-bottom;
 
   &:nth-child(2) {
     background-color: $list-item-bgcolor-alt;
