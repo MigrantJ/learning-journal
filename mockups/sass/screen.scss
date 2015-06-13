@@ -11,8 +11,11 @@
 //External imports
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
-@include sticky-footer(0px);
 @include font-face("Open Sans", null);
+
+html {
+  height: 100%;
+}
 
 body {
   @include background(linear-gradient(to bottom right, $bg-gradient-topleft, $bg-gradient-botright));
