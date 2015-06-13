@@ -19,8 +19,9 @@ html {
 
 body {
   @include background(linear-gradient(to bottom right, $bg-gradient-topleft, $bg-gradient-botright));
+  background-attachment: fixed;
   font-family: "Open Sans", sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
   color: $color-text;
 }
 
@@ -79,7 +80,7 @@ textarea {
 
 #container {
   width: $list-width;
-  height: 100%;
+  min-height: 1200px;
   position: absolute;
   left: 50%;
   margin-left: $list-offset;

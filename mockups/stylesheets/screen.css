@@ -81,22 +81,23 @@ body {
   background: -moz-linear-gradient(top, #9bbad4, #ffe9a1);
   background: -webkit-linear-gradient(top, #9bbad4, #ffe9a1);
   background: linear-gradient(to bottom right, #9bbad4, #ffe9a1);
+  background-attachment: fixed;
   font-family: "Open Sans", sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
   color: black;
 }
 
-/* line 27, ../sass/screen.scss */
+/* line 28, ../sass/screen.scss */
 a {
   color: #ffd343;
 }
-/* line 30, ../sass/screen.scss */
+/* line 31, ../sass/screen.scss */
 a:hover {
   color: #ffe9a1;
   text-decoration: underline;
 }
 
-/* line 36, ../sass/screen.scss */
+/* line 37, ../sass/screen.scss */
 button {
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzM3NzZhYSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzJjNWU4OCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3776aa), color-stop(100%, #2c5e88));
@@ -106,33 +107,33 @@ button {
   color: #ffd343;
   font-size: 24px;
 }
-/* line 41, ../sass/screen.scss */
+/* line 42, ../sass/screen.scss */
 button:hover {
   color: #ffe9a1;
   text-decoration: underline;
 }
 
-/* line 47, ../sass/screen.scss */
+/* line 48, ../sass/screen.scss */
 h1 {
   color: white;
   text-align: center;
   font-size: 36px;
 }
 
-/* line 53, ../sass/screen.scss */
+/* line 54, ../sass/screen.scss */
 h2 {
   color: #ffd343;
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-/* line 59, ../sass/screen.scss */
+/* line 60, ../sass/screen.scss */
 input {
   width: 100%;
   margin-bottom: 5px;
 }
 
-/* line 64, ../sass/screen.scss */
+/* line 65, ../sass/screen.scss */
 textarea {
   outline: none;
   resize: none;
@@ -141,7 +142,7 @@ textarea {
   height: 500px;
 }
 
-/* line 72, ../sass/screen.scss */
+/* line 73, ../sass/screen.scss */
 #bg {
   width: 100%;
   position: absolute;
@@ -150,10 +151,10 @@ textarea {
   opacity: 0.2;
 }
 
-/* line 80, ../sass/screen.scss */
+/* line 81, ../sass/screen.scss */
 #container {
   width: 480px;
-  height: 100%;
+  min-height: 1200px;
   position: absolute;
   left: 50%;
   margin-left: -240px;
@@ -161,17 +162,17 @@ textarea {
   box-shadow: 0px 0px 20px black;
 }
 
-/* line 90, ../sass/screen.scss */
+/* line 91, ../sass/screen.scss */
 #header {
   padding: 10px;
 }
 
-/* line 95, ../sass/screen.scss */
+/* line 96, ../sass/screen.scss */
 .create-new button {
   width: 100%;
 }
 
-/* line 100, ../sass/screen.scss */
+/* line 101, ../sass/screen.scss */
 .journal-list-item {
   overflow: hidden;
   *zoom: 1;
@@ -180,48 +181,48 @@ textarea {
   padding: 10px;
   border-bottom: 1px solid #316a99;
 }
-/* line 107, ../sass/screen.scss */
+/* line 108, ../sass/screen.scss */
 .journal-list-item:nth-child(2) {
   background-color: rgba(27, 59, 85, 0);
 }
-/* line 111, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
 .journal-list-item .title {
   float: left;
 }
-/* line 115, ../sass/screen.scss */
+/* line 116, ../sass/screen.scss */
 .journal-list-item .date {
   float: right;
 }
 
-/* line 120, ../sass/screen.scss */
+/* line 121, ../sass/screen.scss */
 .journal-entry {
   padding: 10px;
 }
-/* line 123, ../sass/screen.scss */
+/* line 124, ../sass/screen.scss */
 .journal-entry p {
   margin: 10px 0px 10px 0px;
   min-height: 100px;
 }
 
-/* line 129, ../sass/screen.scss */
+/* line 130, ../sass/screen.scss */
 .date {
   font-size: 12px;
 }
 
-/* line 133, ../sass/screen.scss */
+/* line 134, ../sass/screen.scss */
 .form-buttons {
   margin: 10px 0px 10px 0px;
 }
-/* line 136, ../sass/screen.scss */
+/* line 137, ../sass/screen.scss */
 .form-buttons #button-back {
   float: left;
 }
-/* line 140, ../sass/screen.scss */
+/* line 141, ../sass/screen.scss */
 .form-buttons #button-forward {
   float: right;
 }
 
-/* line 145, ../sass/screen.scss */
+/* line 146, ../sass/screen.scss */
 #create-form, #edit-form {
   padding: 10px;
 }
