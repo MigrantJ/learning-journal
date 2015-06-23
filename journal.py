@@ -5,6 +5,22 @@ from pyramid.config import Configurator
 from pyramid.view import view_config
 from waitress import serve
 
+import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+
+class Entry(Base):
+    __tablename__ = 'entries'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    title = sa.Column(sa.String(length=128))
+    text = sa.Column(sa.Text)
+    created = sa.Column(sa.DateTime)
+
+    def __repr__(self):
+        return self.title
 
 @view_config(route_name='home', renderer='string')
 def home(request):
