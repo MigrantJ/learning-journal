@@ -7,8 +7,14 @@ from waitress import serve
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
+Session = sessionmaker()
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgresql://jimgrant@localhost:5432/learning-journal'
+)
 
 
 class Entry(Base):
@@ -21,6 +27,12 @@ class Entry(Base):
 
     def __repr__(self):
         return self.title
+
+
+def init_db():
+    engine = sa.create_engine(DATABASE_URL, echo=True)
+    Base.metadata.create_all(engine)
+
 
 @view_config(route_name='home', renderer='string')
 def home(request):
