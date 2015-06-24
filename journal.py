@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os
+import datetime
 from pyramid.config import Configurator
 from pyramid.view import view_config
 from waitress import serve
@@ -20,10 +21,12 @@ DATABASE_URL = os.environ.get(
 class Entry(Base):
     __tablename__ = 'entries'
 
-    id = sa.Column(sa.Integer, primary_key=True)
-    title = sa.Column(sa.String(length=128))
-    text = sa.Column(sa.Text)
-    created = sa.Column(sa.DateTime)
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    title = sa.Column(sa.Unicode(127), nullable=False)
+    text = sa.Column(sa.UnicodeText, nullable=False)
+    created = sa.Column(
+        sa.DateTime, nullable=False, default=datetime.datetime.utcnow
+    )
 
     def __repr__(self):
         return self.title
