@@ -8,10 +8,8 @@ from waitress import serve
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
-Session = sessionmaker()
 DATABASE_URL = os.environ.get(
     'DATABASE_URL',
     'postgresql://jimgrant@localhost:5432/learning-journal'
@@ -33,7 +31,7 @@ class Entry(Base):
 
 
 def init_db():
-    engine = sa.create_engine(DATABASE_URL, echo=True)
+    engine = sa.create_engine(DATABASE_URL)
     Base.metadata.create_all(engine)
 
 

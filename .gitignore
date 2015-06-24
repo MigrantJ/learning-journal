@@ -62,3 +62,6 @@ target/
 
 # Compass
 .sass-cache/
+
+# Apple
+.DS_Store
