@@ -43,3 +43,22 @@ def test_write_entry(db_session):
     assert db_session.query(journal.Entry).count() == 0
     # now, create an entry using the 'write' class method
     entry = journal.Entry.write(**kwargs)
+
+    # the entry we get back ought to be an instance of Entry
+    assert isinstance(entry, journal.Entry)
+    # id and created are generated automatically, but only on writing to
+    # the database
+    auto_fields = ['id', 'created']
+    for field in auto_fields:
+        assert getattr(entry, field, None) is None
+
+    # flush the session to "write" the data to the database
+    db_session.flush()
+    # now, we should have one entry:
+    assert db_session.query(journal.Entry).count() == 1
+    for field in kwargs:
+        if field != 'session':
+            assert getattr(entry, field, '') == kwargs[field]
+    # id and created should be set automatically upon writing to db:
+    for auto in ['id', 'created']:
+        assert getattr(entry, auto, None) is not None
