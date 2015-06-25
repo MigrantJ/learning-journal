@@ -16,6 +16,7 @@ from sqlalchemy.exc import DBAPIError
 
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
+from cryptacular.bcrypt import BCRYPTPasswordManager
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -85,7 +86,10 @@ def main():
     settings['reload_all'] = debug
     settings['debug_all'] = debug
     settings['auth.username'] = os.environ.get('AUTH_USERNAME', 'admin')
-    settings['auth.password'] = os.environ.get('AUTH_PASSWORD', 'secret')
+    manager = BCRYPTPasswordManager()
+    settings['auth.password'] = os.environ.get(
+        'AUTH_PASSWORD', manager.encode('secret')
+    )
     if not os.environ.get('TESTING', False):
         # only bind the session if we are not testing
         engine = sa.create_engine(DATABASE_URL)
@@ -117,9 +121,10 @@ def do_login(request):
         raise ValueError('both username and password are required')
 
     settings = request.registry.settings
+    manager = BCRYPTPasswordManager()
     if username == settings.get('auth.username', ''):
-        if password == settings.get('auth.password', ''):
-            return True
+        hashed = settings.get('auth.password', '')
+        return manager.check(hashed, password)
     return False
 
 if __name__ == '__main__':
