@@ -15,6 +15,7 @@
   </div>
   {% endfor %}
 
+  {% if request.authenticated_userid %}
   <aside>
   <form action="{{ request.route_url('add') }}" method="POST" class="add_entry">
     <div class="field">
@@ -30,4 +31,5 @@
     </div>
   </form>
   </aside>
+  {% endif %}
 {% endblock %}
