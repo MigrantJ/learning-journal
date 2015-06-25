@@ -135,6 +135,13 @@ def test_read_entries_one(db_session):
         assert isinstance(entry, journal.Entry)
 
 
+def test_one_entry(db_session, test_entry):
+    eid = test_entry.id
+    entry = journal.Entry.one(eid)
+    assert isinstance(entry, journal.Entry)
+    assert entry.title == test_entry.title
+
+
 def test_empty_listing(app):
     response = app.get('/')
     assert response.status_code == 200
@@ -144,7 +151,7 @@ def test_empty_listing(app):
 
 
 def test_listing(app, test_entry):
-    response = app.get('/')
+    response = app.get('/detail/' + unicode(test_entry.id))
     assert response.status_code == 200
     actual = response.body
     for field in ['title', 'text']:

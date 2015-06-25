@@ -55,6 +55,12 @@ class Entry(Base):
         session.add(instance)
         return instance
 
+    @classmethod
+    def one(cls, eid=None, session=None):
+        if session is None:
+            session = DBSession
+        return session.query(cls).filter(cls.id == eid).one()
+
 
 def init_db():
     engine = sa.create_engine(DATABASE_URL)
@@ -65,6 +71,12 @@ def init_db():
 def list_view(request):
     entries = Entry.all()
     return {'entries': entries}
+
+
+@view_config(route_name='detail', renderer='templates/detail.jinja2')
+def detail_view(request):
+    entry = Entry.one(request.matchdict['id'])
+    return {'entry': entry}
 
 
 @view_config(route_name='add', request_method='POST')
@@ -141,6 +153,7 @@ def main():
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_route('detail', '/detail/{id}')
     config.add_static_view('static', os.path.join(HERE, 'static'))
     config.scan()
     app = config.make_wsgi_app()

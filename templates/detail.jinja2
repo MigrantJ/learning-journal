@@ -1,0 +1,21 @@
+{% extends "base.jinja2" %}
+{% block body %}
+<article class="journal-entry">
+    <h2 class="title">{{ entry.title }}</h2>
+    <hr>
+    <p>
+        {{ entry.text }}
+    </p>
+    <hr>
+    <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
+
+    <div class="form-buttons">
+        <button id="button-back" onclick="window.location='index.html'">
+            Back
+        </button>
+        <button id="button-forward" onclick="window.location='edit.html'">
+            Edit
+        </button>
+    </div>
+</article>
+{% endblock %}
