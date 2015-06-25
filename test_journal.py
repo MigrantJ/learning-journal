@@ -4,6 +4,7 @@ import os
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
+from pyramid import testing
 
 TEST_DATABASE_URL = os.environ.get(
     'DATABASE_URL',
@@ -42,13 +43,28 @@ def app():
     testapp = TestApp(main())
     return testapp
 
-
 @pytest.fixture()
 def test_entry(db_session):
     from journal import Entry
     entry = Entry.write(title="Test", text="Test Text", session=db_session)
     db_session.flush()
     return entry
+
+@pytest.fixture(scope='function')
+def auth_req(request):
+    settings = {
+        'auth.username': 'admin',
+        'auth.password': 'secret',
+        }
+    testing.setUp(settings=settings)
+    req = testing.DummyRequest()
+
+    def cleanup():
+        testing.tearDown()
+
+    request.addfinalizer(cleanup)
+
+    return req
 
 
 def test_write_entry(db_session):
@@ -159,3 +175,29 @@ def test_add_view_no_params(app):
     response = app.post('/add', params={}, status='5*')
     assert response.status_code == 500
     assert 'IntegrityError' in response.body
+
+
+def test_do_login_success(auth_req):
+    from journal import do_login
+    auth_req.params = {'username': 'admin', 'password': 'secret'}
+    assert do_login(auth_req)
+
+
+def test_do_login_bad_pass(auth_req):
+    from journal import do_login
+    auth_req.params = {'username': 'admin', 'password': 'wrong'}
+    assert not do_login(auth_req)
+
+
+def test_do_login_bad_user(auth_req):
+    from journal import do_login
+    auth_req.params = {'username': 'bad', 'password': 'secret'}
+    assert not do_login(auth_req)
+
+
+def test_do_login_missing_params(auth_req):
+    from journal import do_login
+    for params in ({'username': 'admin'}, {'password': 'secret'}):
+        auth_req.params = params
+        with pytest.raises(ValueError):
+            do_login(auth_req)
