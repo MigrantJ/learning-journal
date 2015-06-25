@@ -52,9 +52,10 @@ def init_db():
     Base.metadata.create_all(engine)
 
 
-@view_config(route_name='home', renderer='string')
-def home(request):
-    return "Hello World"
+@view_config(route_name='home', renderer='templates/list.jinja2')
+def list_view(request):
+    entries = Entry.all()
+    return {'entries': entries}
 
 
 def main():
