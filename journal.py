@@ -8,8 +8,11 @@ from waitress import serve
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import scoped_session, sessionmaker
+from zope.sqlalchemy import ZopeTransactionExtension
 
 Base = declarative_base()
+DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 DATABASE_URL = os.environ.get(
     'DATABASE_URL',
     'postgresql://jimgrant@localhost:5432/learning-journal'
@@ -29,6 +32,10 @@ class Entry(Base):
     def __repr__(self):
         return self.title
 
+    @classmethod
+    def write(cls, title=None, text=None, session=None):
+        pass
+
 
 def init_db():
     engine = sa.create_engine(DATABASE_URL)
@@ -46,10 +53,15 @@ def main():
     debug = os.environ.get('DEBUG', True)
     settings['reload_all'] = debug
     settings['debug_all'] = debug
+    if not os.environ.get('TESTING', False):
+        # only bind the session if we are not testing
+        engine = sa.create_engine(DATABASE_URL)
+        DBSession.configure(bind=engine)
     # configuration setup
     config = Configurator(
         settings=settings
     )
+    config.include('pyramid_tm')
     config.add_route('home', '/')
     config.scan()
     app = config.make_wsgi_app()
