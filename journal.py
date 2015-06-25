@@ -33,6 +33,12 @@ class Entry(Base):
         return self.title
 
     @classmethod
+    def all(cls, session=None):
+        if session is None:
+            session = DBSession
+        return session.query(cls).order_by(cls.created.desc()).all()
+
+    @classmethod
     def write(cls, title=None, text=None, session=None):
         if session is None:
             session = DBSession
