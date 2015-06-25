@@ -35,6 +35,21 @@ def db_session(request, connection):
     from journal import DBSession
     return DBSession
 
+@pytest.fixture()
+def app():
+    from journal import main
+    from webtest import TestApp
+    testapp = TestApp(main())
+    return testapp
+
+
+@pytest.fixture()
+def test_entry(db_session):
+    from journal import Entry
+    entry = Entry.write(title="Test", text="Test Text", session=db_session)
+    db_session.flush()
+    return entry
+
 
 def test_write_entry(db_session):
     kwargs = {'title': "Test Title", 'text': "Test entry text"}
@@ -100,3 +115,20 @@ def test_read_entries_one(db_session):
     assert entries[0].title > entries[1].title > entries[2].title
     for entry in entries:
         assert isinstance(entry, journal.Entry)
+
+
+def test_empty_listing(app):
+    response = app.get('/')
+    assert response.status_code == 200
+    actual = response.body
+    expected = 'No entries here so far'
+    assert expected in actual
+
+
+def test_listing(app, test_entry):
+    response = app.get('/')
+    assert response.status_code == 200
+    actual = response.body
+    for field in ['title', 'text']:
+        expected = getattr(test_entry, field, 'none')
+        assert expected in actual
