@@ -25,6 +25,7 @@ DATABASE_URL = os.environ.get(
     'DATABASE_URL',
     'postgresql://jimgrant@localhost:5432/learning-journal'
 )
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 class Entry(Base):
@@ -140,6 +141,7 @@ def main():
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_static_view('static', os.path.join(HERE, 'static'))
     config.scan()
     app = config.make_wsgi_app()
     return app
