@@ -1,16 +1,16 @@
 {% extends "base.jinja2" %}
 {% block body %}
-<form id="create-form">
+<form id="create-form" action="{{ request.route_url('add') }}" method="POST">
     <h2>Create Entry</h2>
     <input id="title" placeholder="Title of entry..." type="text">
     <textarea id="text" placeholder="Type your notes here..."></textarea>
 
     <div class="form-buttons">
-        <button type="button" id="button-back" onclick="window.location='index.html'">
+        <button type="button" id="button-back" onclick="window.location='{{ request.route_url('home') }}'">
             Cancel
         </button>
-        <button type="button" id="button-forward" onclick="window.location='detail.html'">
-            Submit
+        <button type="submit" id="button-forward">
+            Share
         </button>
     </div>
 </form>

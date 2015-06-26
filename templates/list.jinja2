@@ -2,7 +2,7 @@
 {% block body %}
 {% if request.authenticated_userid %}
 <div class="create-new">
-  <button onclick="window.location='create.html'">
+  <button onclick="window.location='{{ request.route_url('create') }}'">
       Create New
   </button>
 </div>
@@ -10,7 +10,7 @@
 <div id="journal-list">
   {% for entry in entries %}
   <div class="journal-list-item">
-      <a href="./detail.html">
+      <a href="{{ request.route_url('detail', id=entry.id) }}">
       <span class="title">{{ entry.title }}</span>
       <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
       </a>
