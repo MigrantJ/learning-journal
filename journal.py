@@ -79,11 +79,28 @@ def detail_view(request):
     return {'entry': entry}
 
 
+@view_config(route_name='create', renderer='templates/create.jinja2')
+def create_view(request):
+    return {}
+
+
+@view_config(route_name='edit', renderer='templates/edit.jinja2')
+def edit_view(request):
+    entry = Entry.one(request.matchdict['id'])
+    return {'entry': entry}
+
+
 @view_config(route_name='add', request_method='POST')
 def add_entry(request):
     title = request.params.get('title')
     text = request.params.get('text')
     Entry.write(title=title, text=text)
+    return HTTPFound(request.route_url('home'))
+
+
+@view_config(route_name='modify', request_method='POST')
+def modify_entry(request):
+    # todo: implement
     return HTTPFound(request.route_url('home'))
 
 
@@ -154,6 +171,9 @@ def main():
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('detail', '/detail/{id}')
+    config.add_route('create', '/create')
+    config.add_route('edit', '/edit/{id}')
+    config.add_route('modify', '/modify/{id}')
     config.add_static_view('static', os.path.join(HERE, 'static'))
     config.scan()
     app = config.make_wsgi_app()

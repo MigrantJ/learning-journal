@@ -159,6 +159,11 @@ def test_listing(app, test_entry):
         assert expected in actual
 
 
+# todo: test for create view
+
+# todo: test for edit view
+
+
 def test_post_to_add_view(app):
     entry_data = {
         'title': 'Hello there',
@@ -167,8 +172,7 @@ def test_post_to_add_view(app):
     response = app.post('/add', params=entry_data, status='3*')
     redirected = response.follow()
     actual = redirected.body
-    for expected in entry_data.values():
-        assert expected in actual
+    assert entry_data['title'] in actual
 
 
 def test_get_to_add_view(app):
@@ -211,7 +215,7 @@ def test_do_login_missing_params(auth_req):
         with pytest.raises(ValueError):
             do_login(auth_req)
 
-INPUT_BTN = '<input type="submit" value="Share" name="Share"/>'
+DIV_CREATE_NEW = '<div class="create-new">'
 
 
 def login_helper(username, password, app):
@@ -226,7 +230,7 @@ def login_helper(username, password, app):
 def test_start_as_anonymous(app):
     response = app.get('/', status=200)
     actual = response.body
-    assert INPUT_BTN not in actual
+    assert DIV_CREATE_NEW not in actual
 
 
 def test_login_success(app):
@@ -236,7 +240,7 @@ def test_login_success(app):
     response = redirect.follow()
     assert response.status_code == 200
     actual = response.body
-    assert INPUT_BTN in actual
+    assert DIV_CREATE_NEW in actual
 
 
 def test_login_fails(app):
@@ -245,7 +249,7 @@ def test_login_fails(app):
     assert response.status_code == 200
     actual = response.body
     assert "Login Failed" in actual
-    assert INPUT_BTN not in actual
+    assert DIV_CREATE_NEW not in actual
 
 
 def test_logout(app):
@@ -255,4 +259,4 @@ def test_logout(app):
     response = redirect.follow()
     assert response.status_code == 200
     actual = response.body
-    assert INPUT_BTN not in actual
+    assert DIV_CREATE_NEW not in actual
