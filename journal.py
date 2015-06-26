@@ -61,6 +61,16 @@ class Entry(Base):
             session = DBSession
         return session.query(cls).filter(cls.id == eid).one()
 
+    @classmethod
+    def modify(cls, eid=None, title=None, text=None, session=None):
+        if session is None:
+            session = DBSession
+        instance = cls.one(eid)
+        instance.title = title
+        instance.text = text
+        session.add(instance)
+        return instance
+
 
 def init_db():
     engine = sa.create_engine(DATABASE_URL)
@@ -100,7 +110,10 @@ def add_entry(request):
 
 @view_config(route_name='modify', request_method='POST')
 def modify_entry(request):
-    # todo: implement
+    eid = request.matchdict['id']
+    title = request.params.get('title')
+    text = request.params.get('text')
+    Entry.modify(eid=eid, title=title, text=text)
     return HTTPFound(request.route_url('home'))
 
 

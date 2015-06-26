@@ -70,8 +70,8 @@ def auth_req(request):
 
 
 def test_write_entry(db_session):
-    kwargs = {'title': "Test Title", 'text': "Test entry text"}
-    kwargs['session'] = db_session
+    kwargs = {'title': "Test Title", 'text': "Test entry text",
+              'session': db_session}
     # first, assert that there are no entries in the database:
     assert db_session.query(journal.Entry).count() == 0
     # now, create an entry using the 'write' class method
@@ -159,11 +159,6 @@ def test_listing(app, test_entry):
         assert expected in actual
 
 
-# todo: test for create view
-
-# todo: test for edit view
-
-
 def test_post_to_add_view(app):
     entry_data = {
         'title': 'Hello there',
@@ -186,6 +181,44 @@ def test_get_to_add_view(app):
 
 def test_add_view_no_params(app):
     response = app.post('/add', params={}, status='5*')
+    assert response.status_code == 500
+    assert 'IntegrityError' in response.body
+
+
+def test_post_modify_view(app, test_entry):
+    entry_data = {
+        'title': 'Modify Test',
+        'text': 'This is a post that has been edited'
+    }
+    response = app.post(
+        '/modify/' + unicode(test_entry.id),
+        params=entry_data,
+        status='3*'
+    )
+    redirected = response.follow()
+    actual = redirected.body
+    assert entry_data['title'] in actual
+
+
+def test_get_to_modify_view(app, test_entry):
+    entry_data = {
+        'title': 'test',
+        'text': 'text'
+    }
+    response = app.get(
+        '/modify/' + unicode(test_entry.id),
+        params=entry_data,
+        status='404 Not Found'
+    )
+    assert response.status_code == 404
+
+
+def test_modify_view_no_params(app, test_entry):
+    response = app.post(
+        '/modify/' + unicode(test_entry.id),
+        params={},
+        status='5*'
+    )
     assert response.status_code == 500
     assert 'IntegrityError' in response.body
 
@@ -260,3 +293,36 @@ def test_logout(app):
     assert response.status_code == 200
     actual = response.body
     assert DIV_CREATE_NEW not in actual
+
+
+def test_create_view(app):
+    response = app.get('/create')
+    assert response.status_code == 200
+    form = response.form
+    test_data = {'title': 'Create Test', 'text': 'Create Test Text'}
+    for field in test_data.keys():
+        assert field in form.fields.keys()
+        form[field] = test_data[field]
+
+    submit_res = form.submit()
+    assert submit_res.status_code == 302
+    response = submit_res.follow()
+    assert response.status_code == 200
+    assert test_data['title'] in response.body
+
+
+def test_edit_view(app, test_entry):
+    response = app.get('/edit/' + unicode(test_entry.id))
+    assert response.status_code == 200
+    form = response.form
+    test_data = {'title': 'Edit Test', 'text': 'Edit Test Text'}
+    for field in test_data.keys():
+        assert field in form.fields.keys()
+        assert form[field].value == getattr(test_entry, field)
+        form[field] = test_data[field]
+
+    submit_res = form.submit()
+    assert submit_res.status_code == 302
+    response = submit_res.follow()
+    assert response.status_code == 200
+    assert test_data['title'] in response.body

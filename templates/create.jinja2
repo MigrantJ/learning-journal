@@ -2,8 +2,8 @@
 {% block body %}
 <form id="create-form" action="{{ request.route_url('add') }}" method="POST">
     <h2>Create Entry</h2>
-    <input id="title" placeholder="Title of entry..." type="text">
-    <textarea id="text" placeholder="Type your notes here..."></textarea>
+    <input id="title" name="title" placeholder="Title of entry..." type="text">
+    <textarea id="text" name="text" placeholder="Type your notes here..."></textarea>
 
     <div class="form-buttons">
         <button type="button" id="button-back" onclick="window.location='{{ request.route_url('home') }}'">
