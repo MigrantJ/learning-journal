@@ -223,6 +223,6 @@ textarea {
 }
 
 /* line 146, ../sass/screen.scss */
-#create-form, #edit-form {
+#create-form, #edit-form, #login-form {
     padding: 10px;
 }

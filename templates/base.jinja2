@@ -13,13 +13,15 @@
 			<h1>Python Learning Journal</h1>
 
 			<aside id="user-controls">
-              <ul>
-              {% if not request.authenticated_userid %}
-                <li><a href="{{ request.route_url('login') }}">log in</a></li>
-              {% else %}
-                <li><a href="{{ request.route_url('logout') }}">log out</a></li>
-              {% endif %}
-              </ul>
+                {% if not request.authenticated_userid %}
+                    <button id="button-forward" onclick="window.location='{{ request.route_url('login') }}'">
+                        Login
+                    </button>
+                {% else %}
+                    <button onclick="window.location='{{ request.route_url('logout') }}'">
+                        Logout
+                    </button>
+                {% endif %}
             </aside>
 		</header>
 

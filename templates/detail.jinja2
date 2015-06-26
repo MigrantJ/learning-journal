@@ -13,9 +13,11 @@
         <button id="button-back" onclick="window.location='{{ request.route_url('home') }}'">
             Back
         </button>
+        {% if request.authenticated_userid %}
         <button id="button-forward" onclick="window.location='{{ request.route_url('edit', id=entry.id) }}'">
             Edit
         </button>
+        {% endif %}
     </div>
 </article>
 {% endblock %}
