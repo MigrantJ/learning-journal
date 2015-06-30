@@ -170,28 +170,19 @@ def test_post_to_add_view(app):
     assert entry_data['title'] in actual
 
 
-def test_get_to_add_view(app):
-    entry_data = {
-        'title': 'test',
-        'text': 'text'
-    }
-    response = app.get('/add', params=entry_data, status='404 Not Found')
-    assert response.status_code == 404
-
-
 def test_add_view_no_params(app):
     response = app.post('/add', params={}, status='5*')
     assert response.status_code == 500
     assert 'IntegrityError' in response.body
 
 
-def test_post_modify_view(app, test_entry):
+def test_post_edit_view(app, test_entry):
     entry_data = {
         'title': 'Modify Test',
         'text': 'This is a post that has been edited'
     }
     response = app.post(
-        '/modify/' + unicode(test_entry.id),
+        '/edit/' + unicode(test_entry.id),
         params=entry_data,
         status='3*'
     )
@@ -200,22 +191,9 @@ def test_post_modify_view(app, test_entry):
     assert entry_data['title'] in actual
 
 
-def test_get_to_modify_view(app, test_entry):
-    entry_data = {
-        'title': 'test',
-        'text': 'text'
-    }
-    response = app.get(
-        '/modify/' + unicode(test_entry.id),
-        params=entry_data,
-        status='404 Not Found'
-    )
-    assert response.status_code == 404
-
-
-def test_modify_view_no_params(app, test_entry):
+def test_edit_view_no_params(app, test_entry):
     response = app.post(
-        '/modify/' + unicode(test_entry.id),
+        '/edit/' + unicode(test_entry.id),
         params={},
         status='5*'
     )
@@ -295,8 +273,8 @@ def test_logout(app):
     assert DIV_CREATE_NEW not in actual
 
 
-def test_create_view(app):
-    response = app.get('/create')
+def test_add_view(app):
+    response = app.get('/add')
     assert response.status_code == 200
     form = response.form
     test_data = {'title': 'Create Test', 'text': 'Create Test Text'}
