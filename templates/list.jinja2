@@ -2,7 +2,7 @@
 {% block body %}
 {% if request.authenticated_userid %}
 <div class="create-new">
-  <button onclick="window.location='{{ request.route_url('create') }}'">
+  <button onclick="window.location='{{ request.route_url('add') }}'">
       Create New
   </button>
 </div>
