@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import os
 import datetime
+import re
 from markdown import markdown
 from pyramid.config import Configurator
 from pyramid.view import view_config
@@ -19,7 +20,10 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
 from pyramid.security import remember, forget
-from jinja2_highlight import HighlightExtension
+
+from pygments import highlight
+from pygments.lexers.python import PythonLexer
+from pygments.formatters.html import HtmlFormatter
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -86,6 +90,12 @@ def list_view(request):
 def detail_view(request):
     entry = Entry.one(request.matchdict['id'])
     html_text = markdown(entry.text, output_format='html5')
+
+    def my_highlight(matchobj):
+        return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
+
+    pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
+    html_text = re.sub(pattern, my_highlight, html_text)
     return {
         'entry': {
             'id': entry.id,
@@ -189,7 +199,6 @@ def main():
     config.add_route('detail', '/detail/{id}')
     config.add_route('edit', '/edit/{id}')
     config.add_static_view('static', os.path.join(HERE, 'static'))
-    config.add_jinja2_extension(HighlightExtension)
     config.scan()
     app = config.make_wsgi_app()
     return app
