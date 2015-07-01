@@ -19,6 +19,7 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
 from pyramid.security import remember, forget
+from jinja2_highlight import HighlightExtension
 
 Base = declarative_base()
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
@@ -188,6 +189,7 @@ def main():
     config.add_route('detail', '/detail/{id}')
     config.add_route('edit', '/edit/{id}')
     config.add_static_view('static', os.path.join(HERE, 'static'))
+    config.add_jinja2_extension(HighlightExtension)
     config.scan()
     app = config.make_wsgi_app()
     return app

@@ -1,5 +1,9 @@
 {% extends "base.jinja2" %}
 {% block body %}
+{% highlight 'python' %}
+val = 'hello'
+l = len([1, 2, 3])
+{% endhighlight %}
 <article class="journal-entry">
     <h2 class="title">{{ entry.title }}</h2>
     <hr>
