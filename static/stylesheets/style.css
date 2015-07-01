@@ -85,6 +85,7 @@ body {
     font-family: "Open Sans", sans-serif;
     overflow-x: hidden;
     color: black;
+    line-height: 120%;
 }
 
 /* line 28, ../sass/screen.scss */
@@ -182,7 +183,7 @@ textarea {
     border-bottom: 1px solid #316a99;
 }
 /* line 108, ../sass/screen.scss */
-.journal-list-item:nth-child(2) {
+.journal-list-item:nth-child(2n) {
     background-color: rgba(27, 59, 85, 0);
 }
 /* line 112, ../sass/screen.scss */
@@ -226,8 +227,19 @@ textarea {
     padding: 10px;
 }
 
+#user-controls {
+    position: absolute;
+    left: 10px;
+}
+
 /* pygments */
-.highlight code, .highlight pre{color:#fdce93;background-color:#3f3f3f}
+.highlight code, .highlight pre{
+    color:#fdce93;
+    background-color:#3f3f3f;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 120%;
+}
 .highlight .hll{background-color:#222}
 .highlight .c{color:#7f9f7f}
 .highlight .err{color:#e37170;background-color:#3d3535}
