@@ -63,13 +63,10 @@ class Entry(Base):
         return session.query(cls).filter(cls.id == eid).one()
 
     @classmethod
-    def modify(cls, eid=None, title=None, text=None, session=None):
-        if session is None:
-            session = DBSession
+    def modify(cls, eid=None, title=None, text=None):
         instance = cls.one(eid)
         instance.title = title
         instance.text = text
-        session.add(instance)
         return instance
 
 
