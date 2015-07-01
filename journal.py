@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import os
 import datetime
+from markdown import markdown
 from pyramid.config import Configurator
 from pyramid.view import view_config
 from waitress import serve
@@ -86,7 +87,15 @@ def list_view(request):
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_view(request):
     entry = Entry.one(request.matchdict['id'])
-    return {'entry': entry}
+    html_text = markdown(entry.text, output_format='html5')
+    return {
+        'entry': {
+            'id': entry.id,
+            'title': entry.title,
+            'text': html_text,
+            'created': entry.created
+        }
+    }
 
 
 @view_config(route_name='edit', renderer='templates/edit.jinja2')

@@ -4,7 +4,7 @@
     <h2 class="title">{{ entry.title }}</h2>
     <hr>
     <p>
-        {{ entry.text }}
+        {{ entry.text | safe }}
     </p>
     <hr>
     <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
