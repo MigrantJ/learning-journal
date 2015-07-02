@@ -240,6 +240,7 @@ textarea {
     padding: 10px;
     font-family: monospace;
     font-size: 120%;
+    overflow: scroll;
 }
 .highlight .hll{background-color:#222}
 .highlight .c{color:#7f9f7f}
