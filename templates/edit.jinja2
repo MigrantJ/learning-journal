@@ -6,9 +6,11 @@
     <textarea id="text" name="text" placeholder="Type your notes here...">{{ entry.text }}</textarea>
 
     <div class="form-buttons">
-        <button type="button" id="button-back" onclick="window.location='{{ request.route_url('detail', id=entry.id) }}'">
-            Cancel
-        </button>
+        <a href="{{ request.route_url('detail', id=entry.id) }}">
+            <button type="button" id="button-back">
+                Cancel
+            </button>
+        </a>
         <button type="submit" id="button-forward">
             Save
         </button>

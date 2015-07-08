@@ -10,13 +10,17 @@
     <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
 
     <div class="form-buttons">
-        <button id="button-back" onclick="window.location='{{ request.route_url('home') }}'">
-            Back
-        </button>
+        <a href="{{ request.route_url('home') }}">
+            <button id="button-back">
+                Back
+            </button>
+        </a>
         {% if request.authenticated_userid %}
-        <button id="button-forward" onclick="window.location='{{ request.route_url('edit', id=entry.id) }}'">
-            Edit
-        </button>
+        <a href="{{ request.route_url('edit', id=entry.id) }}">
+            <button id="button-forward">
+                Edit
+            </button>
+        </a>
         {% endif %}
     </div>
 </article>
