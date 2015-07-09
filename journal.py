@@ -91,18 +91,12 @@ def list_view(request):
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_view(request):
     entry = Entry.one(request.matchdict['id'])
-    html_text = markdown(entry.text, output_format='html5')
 
-    def my_highlight(matchobj):
-        return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
-
-    pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
-    html_text = re.sub(pattern, my_highlight, html_text)
     return {
         'entry': {
             'id': entry.id,
             'title': entry.title,
-            'text': html_text,
+            'text': render_markdown(entry.text),
             'created': entry.created
         }
     }
@@ -121,11 +115,16 @@ def edit_view(request):
         if 'HTTP_X_REQUESTED_WITH' in request.environ:
             return Response(body=json.dumps({
                 'title': title,
-                'text': text
+                'text': render_markdown(text)
             }), content_type=b'application/json')
         return HTTPFound(request.route_url('home'))
 
     entry = Entry.one(request.matchdict['id'])
+    if 'HTTP_X_REQUESTED_WITH' in request.environ:
+        return Response(body=json.dumps({
+            'title': entry.title,
+            'text': entry.text
+        }), content_type=b'application/json')
     return {'entry': entry}
 
 
@@ -175,6 +174,16 @@ def db_exception(context, request):
     response = Response(context.message)
     response.status_int = 500
     return response
+
+
+def render_markdown(text):
+    html_text = markdown(text, output_format='html5')
+
+    def my_highlight(matchobj):
+        return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
+
+    pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
+    return re.sub(pattern, my_highlight, html_text)
 
 
 def main():

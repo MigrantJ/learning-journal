@@ -1,11 +1,11 @@
 {% extends "base.jinja2" %}
 {% block body %}
 <article class="journal-entry">
-    <h2 class="title">{{ entry.title }}</h2>
+    <h2 class="title" id="entry-title">{{ entry.title }}</h2>
     <hr>
-    <p>
+    <div id="entry-text">
         {{ entry.text | safe }}
-    </p>
+    </div>
     <hr>
     <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
 
@@ -28,8 +28,8 @@
     <form id="edit-form" action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
         <h2>Edit Entry</h2>
         <input id="form-id" type="hidden" value="{{ entry.id }}">
-        <input id="form-title" name="title" placeholder="Title of entry..." type="text" value="{{ entry.title }}">
-        <textarea id="form-text" name="text" placeholder="Type your notes here...">{{ entry.text }}</textarea>
+        <input id="form-title" name="title" placeholder="Title of entry..." type="text" value="">
+        <textarea id="form-text" name="text" placeholder="Type your notes here..."></textarea>
 
         <div class="form-buttons">
             <a class="cancel-button" href="{{ request.route_url('detail', id=entry.id) }}">
