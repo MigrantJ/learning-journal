@@ -159,7 +159,22 @@ def test_listing(app, test_entry):
         assert expected in actual
 
 
+LOGIN_FORM = '<form id="login-form"'
+
+
+def test_post_to_add_view_no_auth(app):
+    entry_data = {
+        'title': 'Hello there',
+        'text': 'This is a post',
+        }
+    response = app.post('/add', params=entry_data, status='3*')
+    redirected = response.follow()
+    actual = redirected.body
+    assert LOGIN_FORM in actual
+
+
 def test_post_to_add_view(app):
+    test_login_success(app)
     entry_data = {
         'title': 'Hello there',
         'text': 'This is a post',
@@ -171,12 +186,29 @@ def test_post_to_add_view(app):
 
 
 def test_add_view_no_params(app):
+    test_login_success(app)
     response = app.post('/add', params={}, status='5*')
     assert response.status_code == 500
     assert 'IntegrityError' in response.body
 
 
+def test_post_edit_view_no_auth(app, test_entry):
+    entry_data = {
+        'title': 'Modify Test',
+        'text': 'This is a post that has been edited'
+    }
+    response = app.post(
+        '/edit/' + unicode(test_entry.id),
+        params=entry_data,
+        status='3*'
+    )
+    redirected = response.follow()
+    actual = redirected.body
+    assert LOGIN_FORM in actual
+
+
 def test_post_edit_view(app, test_entry):
+    test_login_success(app)
     entry_data = {
         'title': 'Modify Test',
         'text': 'This is a post that has been edited'
@@ -192,6 +224,7 @@ def test_post_edit_view(app, test_entry):
 
 
 def test_edit_view_no_params(app, test_entry):
+    test_login_success(app)
     response = app.post(
         '/edit/' + unicode(test_entry.id),
         params={},
@@ -273,7 +306,17 @@ def test_logout(app):
     assert DIV_CREATE_NEW not in actual
 
 
+def test_add_view_no_auth(app):
+    response = app.get('/add')
+    assert response.status_code == 302
+    response = response.follow()
+    assert response.status_code == 200
+    actual = response.body
+    assert LOGIN_FORM in actual
+
+
 def test_add_view(app):
+    test_login_success(app)
     response = app.get('/add')
     assert response.status_code == 200
     form = response.form
@@ -289,7 +332,17 @@ def test_add_view(app):
     assert test_data['title'] in response.body
 
 
+def test_edit_view_no_auth(app, test_entry):
+    response = app.get('/edit/' + unicode(test_entry.id))
+    assert response.status_code == 302
+    response = response.follow()
+    assert response.status_code == 200
+    actual = response.body
+    assert LOGIN_FORM in actual
+
+
 def test_edit_view(app, test_entry):
+    test_login_success(app)
     response = app.get('/edit/' + unicode(test_entry.id))
     assert response.status_code == 200
     form = response.form
