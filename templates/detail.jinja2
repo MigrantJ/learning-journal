@@ -24,4 +24,22 @@
         {% endif %}
     </div>
 </article>
+<div class="hide-on-start" id="edit-form-container">
+    <form id="edit-form" action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
+        <h2>Edit Entry</h2>
+        <input id="title" name="title" placeholder="Title of entry..." type="text" value="{{ entry.title }}">
+        <textarea id="text" name="text" placeholder="Type your notes here...">{{ entry.text }}</textarea>
+
+        <div class="form-buttons">
+            <a href="{{ request.route_url('detail', id=entry.id) }}">
+                <button type="button" id="button-back">
+                    Cancel
+                </button>
+            </a>
+            <button type="submit" id="button-forward">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
 {% endblock %}
