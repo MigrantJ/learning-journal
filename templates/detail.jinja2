@@ -16,7 +16,7 @@
             </button>
         </a>
         {% if request.authenticated_userid %}
-        <a href="{{ request.route_url('edit', id=entry.id) }}">
+        <a id="edit-button" href="{{ request.route_url('edit', id=entry.id) }}">
             <button id="button-forward">
                 Edit
             </button>
@@ -31,7 +31,7 @@
         <textarea id="text" name="text" placeholder="Type your notes here...">{{ entry.text }}</textarea>
 
         <div class="form-buttons">
-            <a href="{{ request.route_url('detail', id=entry.id) }}">
+            <a class="cancel-button" href="{{ request.route_url('detail', id=entry.id) }}">
                 <button type="button" id="button-back">
                     Cancel
                 </button>
