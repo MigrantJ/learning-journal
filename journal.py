@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import os
 import datetime
 import re
+import json
 from markdown import markdown
 from pyramid.config import Configurator
 from pyramid.view import view_config
@@ -14,6 +15,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
 from pyramid.httpexceptions import HTTPFound
+from pyramid.response import Response
 from sqlalchemy.exc import DBAPIError
 
 from pyramid.authentication import AuthTktAuthenticationPolicy
@@ -116,6 +118,11 @@ def edit_view(request):
         title = request.params.get('title')
         text = request.params.get('text')
         Entry.modify(eid=eid, title=title, text=text)
+        if 'HTTP_X_REQUESTED_WITH' in request.environ:
+            return Response(body=json.dumps({
+                'title': title,
+                'text': text
+            }), content_type=b'application/json')
         return HTTPFound(request.route_url('home'))
 
     entry = Entry.one(request.matchdict['id'])

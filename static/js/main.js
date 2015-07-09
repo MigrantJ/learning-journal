@@ -10,9 +10,9 @@ $(function() {
     $("#save-button").on("click", function (event) {
         event.preventDefault();
 
-        var id = $("#entry-id").val();
-        var title = $("#title").val();
-        var text = $("#text").val();
+        var id = $("#form-id").val();
+        var title = $("#form-title").val();
+        var text = $("#form-text").val();
 
         $.ajax({
             method: "POST",
@@ -23,8 +23,8 @@ $(function() {
                 text: text
             }
         })
-            .done(function() {
-                alert(id);
+            .done(function(response) {
+                alert(response.text);
             })
             .fail(function() {
                 alert( "error" );
