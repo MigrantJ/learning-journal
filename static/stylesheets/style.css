@@ -214,11 +214,11 @@ textarea {
     margin: 10px 0px 10px 0px;
 }
 /* line 137, ../sass/screen.scss */
-.form-buttons #button-back {
+.form-buttons .button-back {
     float: left;
 }
 /* line 141, ../sass/screen.scss */
-.form-buttons #button-forward {
+.form-buttons .button-forward {
     float: right;
 }
 
