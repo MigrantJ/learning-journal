@@ -76,6 +76,16 @@ class Entry(Base):
         instance.text = text
         return instance
 
+    @property
+    def mkdown(self):
+        html_text = markdown(self.text, output_format='html5')
+
+        def my_highlight(matchobj):
+            return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
+
+        pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
+        return re.sub(pattern, my_highlight, html_text)
+
 
 def init_db():
     engine = sa.create_engine(DATABASE_URL)
@@ -96,13 +106,18 @@ def detail_view(request):
         'entry': {
             'id': entry.id,
             'title': entry.title,
-            'text': render_markdown(entry.text),
+            'text': entry.mkdown,
             'created': entry.created
         }
     }
 
 
 @view_config(route_name='edit', renderer='templates/edit.jinja2')
+# make sure they can't send PUT or HEAD or whatever requests here
+# YOU CAN PUT MULTIPLE view_configs ON THE SAME ROUTE NAME OR EVEN THE SAME CALLABLE
+# @view_config(route_name='edit', xhr=True, renderer='json')
+# look at pyramid documentation "view predicates"
+# now you don't need to check for HTTP_X_REQUESTED_WITH
 def edit_view(request):
     if not request.authenticated_userid:
         return HTTPFound(request.route_url('login'))
@@ -111,11 +126,11 @@ def edit_view(request):
         eid = request.matchdict['id']
         title = request.params.get('title')
         text = request.params.get('text')
-        Entry.modify(eid=eid, title=title, text=text)
+        entry = Entry.modify(eid=eid, title=title, text=text)
         if 'HTTP_X_REQUESTED_WITH' in request.environ:
             return Response(body=json.dumps({
-                'title': title,
-                'text': render_markdown(text)
+                'title': entry.title,
+                'text': entry.mkdown
             }), content_type=b'application/json')
         return HTTPFound(request.route_url('home'))
 
@@ -170,20 +185,9 @@ def logout(request):
 
 @view_config(context=DBAPIError)
 def db_exception(context, request):
-    from pyramid.response import Response
     response = Response(context.message)
     response.status_int = 500
     return response
-
-
-def render_markdown(text):
-    html_text = markdown(text, output_format='html5')
-
-    def my_highlight(matchobj):
-        return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
-
-    pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
-    return re.sub(pattern, my_highlight, html_text)
 
 
 def main():

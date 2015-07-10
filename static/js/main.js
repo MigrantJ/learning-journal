@@ -10,15 +10,15 @@ $(function() {
             method: "GET",
             url: "/edit/" + id
         })
-            .done(function(response) {
-                $("#form-title").val(response.title);
-                $("#form-text").val(response.text);
-                $(".journal-entry").hide();
-                $("#edit-form-container").show();
-            })
-            .fail(function() {
-                alert( "error" );
-            });
+        .done(function(response) {
+            $("#form-title").val(response.title);
+            $("#form-text").val(response.text);
+            $(".journal-entry").hide();
+            $("#edit-form-container").show();
+        })
+        .fail(function() {
+            alert( "error" );
+        });
     });
 
     $("#save-button").on("click", function (event) {
@@ -32,20 +32,19 @@ $(function() {
             method: "POST",
             url: "/edit/" + id,
             data: {
-                id: id,
                 title: title,
                 text: text
             }
         })
-            .done(function(response) {
-                $("#entry-title").html(response.title);
-                $("#entry-text").html(response.text);
-                $(".journal-entry").show();
-                $("#edit-form-container").hide();
-            })
-            .fail(function() {
-                alert( "error" );
-            });
+        .done(function(response) {
+            $("#entry-title").html(response.title);
+            $("#entry-text").html(response.text);
+            $(".journal-entry").show();
+            $("#edit-form-container").hide();
+        })
+        .fail(function() {
+            alert( "error" );
+        });
     });
 
     $(".cancel-button").on("click", function (event) {
