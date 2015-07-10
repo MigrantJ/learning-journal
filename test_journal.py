@@ -228,10 +228,10 @@ def test_edit_view_no_params(app, test_entry):
     response = app.post(
         '/edit/' + unicode(test_entry.id),
         params={},
-        status='5*'
+        status='4*'
     )
-    assert response.status_code == 500
-    assert 'IntegrityError' in response.body
+    assert response.status_code == 400
+    assert 'Bad Request' in response.body
 
 
 def test_do_login_success(auth_req):
@@ -343,7 +343,8 @@ def test_edit_view_no_auth(app, test_entry):
 
 def test_edit_view(app, test_entry):
     test_login_success(app)
-    response = app.get('/edit/' + unicode(test_entry.id))
+    url = '/edit/' + unicode(test_entry.id)
+    response = app.get(url)
     assert response.status_code == 200
     form = response.form
     test_data = {'title': 'Edit Test', 'text': 'Edit Test Text'}

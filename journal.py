@@ -14,7 +14,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import HTTPFound, HTTPBadRequest
 from pyramid.response import Response
 from sqlalchemy.exc import DBAPIError
 
@@ -128,8 +128,11 @@ def edit_view(request):
     if not request.authenticated_userid:
         return HTTPFound(request.route_url('login'))
 
+    eid = request.matchdict['id']
     if request.method == 'POST':
-        eid = request.matchdict['id']
+        if not request.params.get('title', False) or \
+                not request.params.get('text', False):
+            raise HTTPBadRequest
         title = request.params.get('title')
         text = request.params.get('text')
         entry = Entry.modify(eid=eid, title=title, text=text)
@@ -142,7 +145,7 @@ def edit_view(request):
     else:
         return HTTPFound(request.route_url('home'))
 
-    return {'entry': {'title': resp_title, 'text': resp_text}}
+    return {'entry': {'id': eid, 'title': resp_title, 'text': resp_text}}
 
 
 @view_config(route_name='add',
@@ -150,7 +153,7 @@ def edit_view(request):
              xhr=True,
              renderer='json')
 @view_config(route_name='add',
-             request_method='POST',
+             xhr=False,
              renderer='templates/create.jinja2')
 def add_view(request):
     if not request.authenticated_userid:
@@ -161,12 +164,12 @@ def add_view(request):
         text = request.params.get('text')
         entry = Entry.write(title=title, text=text)
         if 'HTTP_X_REQUESTED_WITH' not in request.environ:
-            return HTTPFound(request.route_url('detail', id=entry.id))
+            return HTTPFound(request.route_url('home'))
+    elif request.method == 'GET':
+        title, text = '', ''
     else:
         return HTTPFound(request.route_url('home'))
-
-    return {'entry': {'title': entry.title, 'text': entry.text}}
-
+    return {'entry': {'title': title, 'text': text}}
 
 @view_config(route_name='login', renderer='templates/login.jinja2')
 def login(request):
