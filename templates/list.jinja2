@@ -3,7 +3,7 @@
 {% if request.authenticated_userid %}
 <div class="create-new">
     <a href="{{ request.route_url('add') }}">
-        <button onclick="window.location=''">
+        <button id="create-button">
             Create New
         </button>
     </a>
@@ -11,7 +11,7 @@
 {% endif %}
 <div id="journal-list">
     {% for entry in entries %}
-    <div class="journal-list-item">
+    <div class="journal-list-item" id="entry-{{ entry.id }}">
         <a href="{{ request.route_url('detail', id=entry.id) }}">
         <span class="title">{{ entry.title }}</span>
         <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
@@ -22,5 +22,41 @@
         <p><em>No entries here so far</em></p>
     </div>
     {% endfor %}
+</div>
+<article class="hide-on-start journal-entry">
+    <h2 class="title" id="entry-title"></h2>
+    <hr>
+    <div id="entry-text">
+    </div>
+    <hr>
+    <span class="date"></span>
+
+    <div class="form-buttons">
+        <button class="button-back" id="back-button">
+            Back
+        </button>
+        {% if request.authenticated_userid %}
+        <button class="button-forward" id="edit-button">
+            Edit
+        </button>
+        {% endif %}
+    </div>
+</article>
+<div class="hide-on-start" id="edit-form-container">
+    <form id="edit-form">
+        <h2 id="edit-form-header"></h2>
+        <input id="form-id" type="hidden">
+        <input id="form-title" name="title" placeholder="Title of entry..." type="text">
+        <textarea id="form-text" name="text" placeholder="Type your notes here..."></textarea>
+
+        <div class="form-buttons">
+            <button type="button" class="button-back" id="cancel-button">
+                Cancel
+            </button>
+            <button type="button" class="button-forward" id="save-button">
+                Save
+            </button>
+        </div>
+    </form>
 </div>
 {% endblock %}

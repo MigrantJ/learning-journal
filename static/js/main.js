@@ -1,6 +1,31 @@
 $(function() {
     $(".hide-on-start").hide();
 
+    $(".journal-list-item").on("click", function (event) {
+        event.preventDefault();
+
+        var id = $(this).attr("id").split("-")[1];
+
+        $.ajax({
+            method: "GET",
+            url: "/detail/" + id
+        })
+        .done(function(response) {
+            $("#entry-title").html(response.entry.title);
+            $("#entry-text").html(response.entry.text);
+            $("#journal-list").hide();
+            $(".journal-entry").show();
+        });
+    });
+
+    $("#create-button").on("click", function (event) {
+        event.preventDefault();
+
+        $("#edit-form-header").text("Create Entry");
+        $("#journal-list").hide();
+        $("#edit-form-container").show();
+    });
+
     $("#edit-button").on("click", function (event) {
         event.preventDefault();
 

@@ -98,16 +98,26 @@ def list_view(request):
     return {'entries': entries}
 
 
-@view_config(route_name='detail', renderer='templates/detail.jinja2')
+@view_config(route_name='detail',
+             xhr=True,
+             renderer='json')
+@view_config(route_name='detail',
+             xhr=False,
+             renderer='templates/detail.jinja2')
 def detail_view(request):
     entry = Entry.one(request.matchdict['id'])
+
+    if 'HTTP_X_REQUESTED_WITH' not in request.environ:
+        created = entry.created
+    else:
+        created = None
 
     return {
         'entry': {
             'id': entry.id,
             'title': entry.title,
             'text': entry.mkdown,
-            'created': entry.created
+            'created': created
         }
     }
 
