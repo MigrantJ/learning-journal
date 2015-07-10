@@ -11,8 +11,8 @@ $(function() {
             url: "/edit/" + id
         })
         .done(function(response) {
-            $("#form-title").val(response.title);
-            $("#form-text").val(response.text);
+            $("#form-title").val(response.entry.title);
+            $("#form-text").val(response.entry.text);
             $(".journal-entry").hide();
             $("#edit-form-container").show();
         })
@@ -37,8 +37,8 @@ $(function() {
             }
         })
         .done(function(response) {
-            $("#entry-title").html(response.title);
-            $("#entry-text").html(response.text);
+            $("#entry-title").html(response.entry.title);
+            $("#entry-text").html(response.entry.text);
             $(".journal-entry").show();
             $("#edit-form-container").hide();
         })

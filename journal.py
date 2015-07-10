@@ -112,12 +112,8 @@ def detail_view(request):
     }
 
 
-@view_config(route_name='edit', renderer='templates/edit.jinja2')
-# make sure they can't send PUT or HEAD or whatever requests here
-# YOU CAN PUT MULTIPLE view_configs ON THE SAME ROUTE NAME OR EVEN THE SAME CALLABLE
-# @view_config(route_name='edit', xhr=True, renderer='json')
-# look at pyramid documentation "view predicates"
-# now you don't need to check for HTTP_X_REQUESTED_WITH
+@view_config(route_name='edit', xhr=True, renderer='json')
+@view_config(route_name='edit', xhr=False, renderer='templates/edit.jinja2')
 def edit_view(request):
     if not request.authenticated_userid:
         return HTTPFound(request.route_url('login'))
@@ -127,20 +123,16 @@ def edit_view(request):
         title = request.params.get('title')
         text = request.params.get('text')
         entry = Entry.modify(eid=eid, title=title, text=text)
-        if 'HTTP_X_REQUESTED_WITH' in request.environ:
-            return Response(body=json.dumps({
-                'title': entry.title,
-                'text': entry.mkdown
-            }), content_type=b'application/json')
+        resp_title, resp_text = entry.title, entry.mkdown
+        if 'HTTP_X_REQUESTED_WITH' not in request.environ:
+            return HTTPFound(request.route_url('detail', id=entry.id))
+    elif request.method == 'GET':
+        entry = Entry.one(request.matchdict['id'])
+        resp_title, resp_text = entry.title, entry.text
+    else:
         return HTTPFound(request.route_url('home'))
 
-    entry = Entry.one(request.matchdict['id'])
-    if 'HTTP_X_REQUESTED_WITH' in request.environ:
-        return Response(body=json.dumps({
-            'title': entry.title,
-            'text': entry.text
-        }), content_type=b'application/json')
-    return {'entry': entry}
+    return {'entry': {'title': resp_title, 'text': resp_text}}
 
 
 @view_config(route_name='add', renderer='templates/create.jinja2')
