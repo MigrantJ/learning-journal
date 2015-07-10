@@ -1,0 +1,46 @@
+{% extends "base.jinja2" %}
+{% block body %}
+<article class="journal-entry">
+    <h2 class="title" id="entry-title">{{ entry.title }}</h2>
+    <hr>
+    <div id="entry-text">
+        {{ entry.text | safe }}
+    </div>
+    <hr>
+    <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
+
+    <div class="form-buttons">
+        <a href="{{ request.route_url('home') }}">
+            <button class="button-back">
+                Back
+            </button>
+        </a>
+        {% if request.authenticated_userid %}
+        <a id="edit-button" href="{{ request.route_url('edit', id=entry.id) }}">
+            <button class="button-forward">
+                Edit
+            </button>
+        </a>
+        {% endif %}
+    </div>
+</article>
+<div class="hide-on-start" id="edit-form-container">
+    <form id="edit-form" action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
+        <h2>Edit Entry</h2>
+        <input id="form-id" type="hidden" value="{{ entry.id }}">
+        <input id="form-title" name="title" placeholder="Title of entry..." type="text" value="">
+        <textarea id="form-text" name="text" placeholder="Type your notes here..."></textarea>
+
+        <div class="form-buttons">
+            <a class="cancel-button" href="{{ request.route_url('detail', id=entry.id) }}">
+                <button type="button" class="button-back">
+                    Cancel
+                </button>
+            </a>
+            <button type="submit" class="button-forward" id="save-button">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

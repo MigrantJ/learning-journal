@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Python Learning Journal</title>
+		<link rel="stylesheet" type="text/css" href="/static/stylesheets/style.css">
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="/static/js/main.js"></script>
+	</head>
+
+	<body>
+	<img id="bg" src="/static/img/Python-logo-notext.svg">
+    <aside id="user-controls">
+        {% if not request.authenticated_userid %}
+            <button onclick="window.location='{{ request.route_url('login') }}'">
+                Login
+            </button>
+        {% else %}
+            <button onclick="window.location='{{ request.route_url('logout') }}'">
+                Logout
+            </button>
+        {% endif %}
+    </aside>
+	<div id="container">
+		<header id="header">
+			<h1>Python Learning Journal</h1>
+		</header>
+
+		<main>
+			{% block body %}{% endblock %}
+		</main>
+	</div>
+	</body>
+
+</html>

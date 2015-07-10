@@ -1,0 +1,67 @@
+{% extends "base.jinja2" %}
+{% block body %}
+{% if request.authenticated_userid %}
+<div class="create-new">
+    <a href="{{ request.route_url('add') }}">
+        <button id="create-button">
+            Create New
+        </button>
+    </a>
+</div>
+{% endif %}
+<div id="journal-list">
+    {% for entry in entries %}
+    <div class="journal-list-item" id="entry-{{ entry.id }}">
+        <a href="{{ request.route_url('detail', id=entry.id) }}">
+        <span class="title">{{ entry.title }}</span>
+        <span class="date">{{ entry.created.strftime('%b. %d, %Y') }}</span>
+        </a>
+    </div>
+    {% else %}
+    <div class="journal-list-item">
+        <p><em>No entries here so far</em></p>
+    </div>
+    {% endfor %}
+</div>
+<article class="hide-on-start journal-entry">
+    <h2 class="title" id="entry-title"></h2>
+    <hr>
+    <div id="entry-text">
+    </div>
+    <hr>
+    <span class="date"></span>
+
+    <div class="form-buttons">
+        <a href="{{ request.route_url('home') }}">
+            <button class="button-back" id="back-button">
+                Back
+            </button>
+        </a>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="" data-text="" data-via="migrant_j" data-size="large" data-count="none">Tweet</a>
+        {% if request.authenticated_userid %}
+        <button class="button-forward" id="edit-button">
+            Edit
+        </button>
+        {% endif %}
+    </div>
+</article>
+<div class="hide-on-start" id="edit-form-container">
+    <form id="edit-form">
+        <h2 id="edit-form-header"></h2>
+        <input id="form-url" type="hidden">
+        <input id="form-title" name="title" placeholder="Title of entry..." type="text">
+        <textarea id="form-text" name="text" placeholder="Type your notes here..."></textarea>
+
+        <div class="form-buttons">
+            <a href="{{ request.route_url('home') }}">
+                <button type="button" class="button-back" id="cancel-button">
+                    Cancel
+                </button>
+            </a>
+            <button type="button" class="button-forward" id="save-button">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

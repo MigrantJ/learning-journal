@@ -1,0 +1,30 @@
+$color-primary: #3776aa;
+$color-secondary: #ffd343;
+$color-highlight: white;
+$color-text: black;
+
+$bg-gradient-topleft: tint($color-primary, 50%);
+$bg-gradient-botright: tint($color-secondary, 50%);
+
+$link-color: $color-secondary;
+$link-hover-color: tint($link-color, 50%);
+
+$button-text-color: $color-secondary;
+$button-gradient-top: $color-primary;
+$button-gradient-bottom: shade($button-gradient-top, 20%);
+$button-hover-gradient-top: tint($button-gradient-top, 30%);
+$button-hover-gradient-bottom: tint($button-gradient-bottom, 30%);
+
+$header1-color: $color-highlight;
+$header2-color: $color-secondary;
+
+/*Journal List*/
+$list-width: 480px;
+$list-offset: $list-width / 2 * -1;
+$list-bgcolor: rgba($color-primary, 0.3);
+$list-border-color: shade($color-primary, 10%);
+
+/*List Items*/
+$list-item-bgcolor: rgba(shade($color-primary, 10%), 0.2);
+$list-item-bgcolor-alt: rgba(shade($color-primary, 50%), 0.0);
+$list-item-border-color: shade($color-primary, 10%);
