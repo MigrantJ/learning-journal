@@ -24,6 +24,8 @@ $(function() {
 
         $("#edit-form-header").text("Create Entry");
         $("#form-url").val('/add');
+        $("#form-title").val('');
+        $("#form-text").val('');
         $("#journal-list").hide();
         $(".journal-entry").hide();
         $("#edit-form-container").show();
@@ -77,14 +79,14 @@ $(function() {
     });
 
     $("#back-button").on("click", function (event) {
-        event.preventDefault();
-        $("#journal-list").show();
-        $(".journal-entry").hide();
+        //event.preventDefault();
+        //$("#journal-list").show();
+        //$(".journal-entry").hide();
     });
 
     $("#cancel-button").on("click", function (event) {
-        event.preventDefault();
-        $(".journal-entry").show();
-        $("#edit-form-container").hide();
+        //event.preventDefault();
+        //$(".journal-entry").show();
+        //$("#edit-form-container").hide();
     });
 });
