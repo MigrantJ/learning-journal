@@ -233,6 +233,11 @@ textarea {
     top: 10px;
 }
 
+#twitter-widget-0 {
+    float: right;
+    padding: 10px 0 10px 10px;
+}
+
 /* pygments */
 .highlight code, .highlight pre{
     color:#fdce93;

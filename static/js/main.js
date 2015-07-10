@@ -13,6 +13,11 @@ $(function() {
         })
         .done(function(response) {
             $("#entry-title").html(response.entry.title);
+            $(".twitter-share-button").attr({
+                "data-text": response.entry.title,
+                "data-url": window.location.href + 'detail/' + id
+            });
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
             $("#entry-text").html(response.entry.text);
             $("#journal-list").hide();
             $(".journal-entry").show();
@@ -76,17 +81,5 @@ $(function() {
         .fail(function() {
             alert( "error" );
         });
-    });
-
-    $("#back-button").on("click", function (event) {
-        //event.preventDefault();
-        //$("#journal-list").show();
-        //$(".journal-entry").hide();
-    });
-
-    $("#cancel-button").on("click", function (event) {
-        //event.preventDefault();
-        //$(".journal-entry").show();
-        //$("#edit-form-container").hide();
     });
 });
