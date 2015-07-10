@@ -5,6 +5,7 @@ $(function() {
         event.preventDefault();
 
         var id = $(this).attr("id").split("-")[1];
+        $("#form-url").val('/edit/' + id);
 
         $.ajax({
             method: "GET",
@@ -22,20 +23,23 @@ $(function() {
         event.preventDefault();
 
         $("#edit-form-header").text("Create Entry");
+        $("#form-url").val('/add');
         $("#journal-list").hide();
+        $(".journal-entry").hide();
         $("#edit-form-container").show();
     });
 
     $("#edit-button").on("click", function (event) {
         event.preventDefault();
 
-        var id = $("#form-id").val();
+        var url = $("#form-url").val();
 
         $.ajax({
             method: "GET",
-            url: "/edit/" + id
+            url: url
         })
         .done(function(response) {
+            $("#edit-form-header").text("Edit Entry");
             $("#form-title").val(response.entry.title);
             $("#form-text").val(response.entry.text);
             $(".journal-entry").hide();
@@ -49,13 +53,13 @@ $(function() {
     $("#save-button").on("click", function (event) {
         event.preventDefault();
 
-        var id = $("#form-id").val();
         var title = $("#form-title").val();
         var text = $("#form-text").val();
+        var url = $("#form-url").val();
 
         $.ajax({
             method: "POST",
-            url: "/edit/" + id,
+            url: url,
             data: {
                 title: title,
                 text: text
@@ -72,7 +76,13 @@ $(function() {
         });
     });
 
-    $(".cancel-button").on("click", function (event) {
+    $("#back-button").on("click", function (event) {
+        event.preventDefault();
+        $("#journal-list").show();
+        $(".journal-entry").hide();
+    });
+
+    $("#cancel-button").on("click", function (event) {
         event.preventDefault();
         $(".journal-entry").show();
         $("#edit-form-container").hide();

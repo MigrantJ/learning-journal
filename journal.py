@@ -145,7 +145,13 @@ def edit_view(request):
     return {'entry': {'title': resp_title, 'text': resp_text}}
 
 
-@view_config(route_name='add', renderer='templates/create.jinja2')
+@view_config(route_name='add',
+             request_method='POST',
+             xhr=True,
+             renderer='json')
+@view_config(route_name='add',
+             request_method='POST',
+             renderer='templates/create.jinja2')
 def add_view(request):
     if not request.authenticated_userid:
         return HTTPFound(request.route_url('login'))
@@ -153,10 +159,13 @@ def add_view(request):
     if request.method == 'POST':
         title = request.params.get('title')
         text = request.params.get('text')
-        Entry.write(title=title, text=text)
+        entry = Entry.write(title=title, text=text)
+        if 'HTTP_X_REQUESTED_WITH' not in request.environ:
+            return HTTPFound(request.route_url('detail', id=entry.id))
+    else:
         return HTTPFound(request.route_url('home'))
 
-    return {}
+    return {'entry': {'title': entry.title, 'text': entry.text}}
 
 
 @view_config(route_name='login', renderer='templates/login.jinja2')
